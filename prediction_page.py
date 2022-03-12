@@ -9,14 +9,6 @@ import pandas as pd
 import requests
 from geopy.distance import geodesic
 
-def get_coordinates(postal_code):
-    req = requests.get('https://developers.onemap.sg/commonapi/search?searchVal='+postal_code+'&returnGeom=Y&getAddrDetails=N&pageNum=1')
-    resultsdict = eval(req.text)
-    if len(resultsdict['results'])>0:
-        return resultsdict['results'][0]['LATITUDE'], resultsdict['results'][0]['LONGITUDE']
-    else:
-        pass
-
 towns = ['ANG MO KIO', 'BEDOK', 'BISHAN', 'BUKIT BATOK', 'BUKIT MERAH',
        'BUKIT PANJANG', 'BUKIT TIMAH', 'CENTRAL AREA', 'CHOA CHU KANG',
        'CLEMENTI', 'GEYLANG', 'HOUGANG', 'JURONG EAST', 'JURONG WEST',
@@ -35,6 +27,15 @@ flat_models = ['Improved', 'New Generation', 'DBSS', 'Standard', 'Apartment',
        'Model A-Maisonette', 'Maisonette', 'Type S1', 'Type S2',
        'Model A2', 'Terrace', 'Improved-Maisonette', 'Premium Maisonette',
        'Multi Generation', 'Premium Apartment Loft', '2-room']
+
+
+def get_coordinates(postal_code):
+    req = requests.get('https://developers.onemap.sg/commonapi/search?searchVal='+postal_code+'&returnGeom=Y&getAddrDetails=N&pageNum=1')
+    resultsdict = eval(req.text)
+    if len(resultsdict['results'])>0:
+        return [resultsdict['results'][0]['LATITUDE'], resultsdict['results'][0]['LONGITUDE']]
+    else:
+        return []
 
 def load_model_from_file():
     model = load_model('DL_model.h5')
@@ -56,7 +57,10 @@ def show_prediction_page():
     def get_min_distances(postal_code):
         if (len(str(int(postal_code))) != 6):
             return 0
-        lat, long = get_coordinates(str(int(postal_code)))
+        coordinates = get_coordinates(str(int(postal_code)))
+        if (len(coordinates) == 0):
+            return 0
+        lat, long = coordinates
         print("lat, long", lat, long)
         malls = pd.read_csv("mall_data.csv")
         mall_cor = list(zip(malls['latitude'], malls['longitude']))
@@ -97,7 +101,7 @@ def show_prediction_page():
     storey_index = (storey - 1) // 3
     num_room = st.radio("Number of rooms", [1, 2, 3, 4])
     postal_code = 100050
-    postal_code = st.number_input('Your postal code')
+    postal_code = st.number_input(label='Your postal code', value=0)
     is_success = 1
     if (postal_code > 0):
         is_success = get_min_distances(postal_code)
