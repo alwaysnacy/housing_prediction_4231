@@ -162,9 +162,11 @@ def show_prediction_page():
         st.subheader(f"The estimated price is ${round(price[0][0], 2)}")
     
     if lr_ok:
-        data_dict = {"month": ['2021-07'], "town": [town], "flat_type": [flat_type[num_room - 1]], "storey_range": [storey_range[storey_index]], "floor_area_sqm": [44.0], "flat_model": [flat_model],	"lease_commence_date": [lease_year],"dist to mrt": [994.360],"min_dist_mall_in_m": [993.885]}
+        data_dict = {"month": ['2021-07'], "town": [town], "flat_type": [num_room], "storey_range": [storey_range[storey_index]], "floor_area_sqm": [floor_area_sqm], "flat_model": [flat_model],	"lease_commence_date": [lease_year], "min_dist_mrt_in_m": [st.session_state.min_mrt * 1000],"min_dist_mall_in_m": [st.session_state.min_mall * 1000]}
         data_df = pd.DataFrame(data_dict)
         X = encoder_old.transform(data_df).toarray()
+        difference_old = (now_year - 2021) * 12 + (now_month - 7)
+        X[0][0] = X[0][0] + difference_old
         price = lr_model.predict(X)
 
         st.subheader(f"The estimated price is ${round(price[0], 2)}")

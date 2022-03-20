@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 
 data = pd.read_excel(r"conclusion.xlsx")
-
+print(data)
 def show_report_page():
     st.title("Our Final Report")
     st.image("images/Picture9.png", caption='Would love to have the best insights into the HDB market? Our report will help you to better assess your house\'s values.')
