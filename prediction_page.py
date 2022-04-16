@@ -116,10 +116,12 @@ def show_prediction_page():
     storey = st.slider("Storey", 1, 51)
     storey_index = (storey - 1) // 3
     num_room = st.radio("Number of rooms", ["1 ROOM", "2 ROOM", "3 ROOM", "4 ROOM", "5 ROOM", "EXECUTIVE", "MULTI-GENERATION"])
+    dict_change = {"1 ROOM": "2 ROOM","2 ROOM": "3 ROOM", "3 ROOM": "4 ROOM", "4 ROOM": "5 ROOM","5 ROOM": "EXECUTIVE", "MULTI-GENERATION": "MULTI-GENERATION"}
     if num_room == "5 ROOM":
         st.write("What a big house of yours!")
     elif num_room == "EXECUTIVE":
         st.write("Nice house of yours!")
+    num_room_lr = dict_change[num_room]
     
     floor_area_sqm = st.number_input(label='Your house area (sqm)', value=0)
     postal_code = 100050
@@ -162,7 +164,7 @@ def show_prediction_page():
         st.subheader(f"The estimated price is ${round(price[0][0], 2)}")
     
     if lr_ok:
-        data_dict = {"month": ['2021-07'], "town": [town], "flat_type": [num_room], "storey_range": [storey_range[storey_index]], "floor_area_sqm": [floor_area_sqm], "flat_model": [flat_model],	"lease_commence_date": [lease_year], "min_dist_mrt_in_m": [st.session_state.min_mrt * 1000],"min_dist_mall_in_m": [st.session_state.min_mall * 1000]}
+        data_dict = {"month": ['2021-07'], "town": [town], "flat_type": [num_room_lr], "storey_range": [storey_range[storey_index]], "floor_area_sqm": [floor_area_sqm], "flat_model": [flat_model],	"lease_commence_date": [lease_year], "min_dist_mrt_in_m": [st.session_state.min_mrt * 1000],"min_dist_mall_in_m": [st.session_state.min_mall * 1000]}
         data_df = pd.DataFrame(data_dict)
         X = encoder_old.transform(data_df).toarray()
         difference_old = (now_year - 2021) * 12 + (now_month)
