@@ -110,7 +110,7 @@ def show_prediction_page():
         encoder = load(file)   
     with open('scaler_final.pkl', 'rb') as file:
         scaler = load(file) 
-    with open('lr_modelold.pkl', 'rb') as file:
+    with open('lr_model_old.pkl', 'rb') as file:
         lr_model = load(file)
 
     storey = st.slider("Storey", 1, 51)
