@@ -10,3 +10,4 @@ streamlit==1.7.0
 sklearn==0.0
 pycparser==2.21
 openpyxl==3.0.9
+clicks==8
