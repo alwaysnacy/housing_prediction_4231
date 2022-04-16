@@ -52,7 +52,7 @@ data = load_model_from_file()
 with open('encoder3_final.pkl', 'rb') as file:
     encoder = load(file)
 
-with open('encoder.pkl', 'rb') as file:
+with open('encoder_old_1.pkl', 'rb') as file:
     encoder_old = load(file)
 
 def show_prediction_page():
@@ -110,7 +110,7 @@ def show_prediction_page():
         encoder = load(file)   
     with open('scaler_final.pkl', 'rb') as file:
         scaler = load(file) 
-    with open('lr_model.pkl', 'rb') as file:
+    with open('lr_modelold.pkl', 'rb') as file:
         lr_model = load(file)
 
     storey = st.slider("Storey", 1, 51)
