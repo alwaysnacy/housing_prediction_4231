@@ -165,7 +165,7 @@ def show_prediction_page():
         data_dict = {"month": ['2021-07'], "town": [town], "flat_type": [num_room], "storey_range": [storey_range[storey_index]], "floor_area_sqm": [floor_area_sqm], "flat_model": [flat_model],	"lease_commence_date": [lease_year], "min_dist_mrt_in_m": [st.session_state.min_mrt * 1000],"min_dist_mall_in_m": [st.session_state.min_mall * 1000]}
         data_df = pd.DataFrame(data_dict)
         X = encoder_old.transform(data_df).toarray()
-        difference_old = (now_year - 2021) * 12 + (now_month - 7)
+        difference_old = (now_year - 2021) * 12 + (now_month)
         X[0][0] = X[0][0] + difference_old
         price = lr_model.predict(X)
 
